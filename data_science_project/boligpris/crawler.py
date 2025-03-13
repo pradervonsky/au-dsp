@@ -63,7 +63,7 @@ def crawl_save_adress(url, filename):
             except:
                 pass
 
-def looping_adress_crawler(url, filename, num_pages=1):
+def looping_adress_crawler(url, filename, sorting_str="&sort=daysForSale-a", num_pages=1):
     """
     Crawls through the given URL and extracts addresses from the web pages.
     
@@ -77,18 +77,18 @@ def looping_adress_crawler(url, filename, num_pages=1):
     """
     with open(filename, 'w') as file:
         for page in range(1, num_pages+1):
-            response = requests.get(f'{url}{page}')
+            response = requests.get(f'{url}{page}{sorting_str}')
             soup = BeautifulSoup(response.text, 'html.parser')
             for link in soup.find_all('a'):
                 href = link.get('href')
                 try:
                     if href.startswith('/adresse/'):
-                        file.write('https://www.boligsiden.dk' + href + '\n')
+                        file.write('https://www.boliga.dk' + href + '\n')
                 except:
                     pass
 
 if __name__ == '__main__':
-    crawl_print_url('https://www.boligsiden.dk/tilsalg?page=1')
-    # crawl_print_adress('https://www.boligsiden.dk/tilsalg?page=1')
-    # crawl_save_adress('https://www.boligsiden.dk/tilsalg?page=1', 'adress.txt')
-    # looping_adress_crawler('https://www.boligsiden.dk/tilsalg?page=', 'adress.txt')
+    # crawl_print_url('https://www.boliga.dk/resultat?searchTab=0&page=1')
+    crawl_print_adress('https://www.boliga.dk/resultat?searchTab=0&page=1')
+    # crawl_save_adress('https://www.boliga.dk/resultat?searchTab=0&page=1', 'adress.txt')
+    # looping_adress_crawler('https://www.boliga.dk/resultat?searchTab=0&page=', 'adress.txt')

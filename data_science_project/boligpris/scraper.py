@@ -1,3 +1,5 @@
+import re
+
 import requests
 from bs4 import BeautifulSoup
 import pandas as pd
@@ -15,7 +17,8 @@ def get_price(url):
     response = requests.get(url)
     soup = BeautifulSoup(response.text, 'html.parser')
     
-    price = soup.find('p', class_='text-blue-900 text-base font-bold text-right').text 
+    price = soup.find('span', class_='house-price d-flex flex-row flex-md-column flex-lg-row align-items-lg-center ng-star-inserted').text 
+    price = int(re.findall('[0-9]+', price.replace('.', ''))[0])
     return price
 
 def create_data_frame(filename):
@@ -41,7 +44,6 @@ def create_data_frame(filename):
     
 
 if __name__ == '__main__':
-    price = create_data_frame(url)
+    url = 'https://www.boliga.dk/adresse/soendervangen-1-8700-horsens-531389064'
+    price = get_price(url)
     print(price)
-    
-    
