@@ -9,4 +9,5 @@ venv/
 .env
 *.pyc
 addresses.txt
+boligpriser.csv
 
